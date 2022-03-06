@@ -1,4 +1,4 @@
-# Hello, and welcome to the (#1) **Open-Source** ROBLOX Rhythm Game!
+# Welcome to the (#1) **Open-Source** ROBLOX Rhythm Game!
 
 <div id="header" align="center">
   <a href="https://www.roblox.com/games/5033496513/ROMania">
