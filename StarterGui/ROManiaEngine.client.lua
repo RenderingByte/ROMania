@@ -306,14 +306,13 @@ RunService.RenderStepped:Connect(function(delta)
 
 		if PlayInfo["Health"] >= 100 then PlayInfo["Health"] = 100 end
 		if PlayInfo["Health"] <= 0 then Reset() end
-		PlayField.Container.HBarBG.HBar.Size = UDim2.new(PlayInfo["Health"]/100, 0,1.1, 0)
-		
+		PlayField.Container.HBarBG.HBar:TweenSize(UDim2.new(PlayInfo["Health"]/100, 0,1.1, 0), "Out", "Quint", 0.25)
 
 		PlayField.Container.PBarBG.PBar.Size = UDim2.new(game.Workspace.Music.TimePosition / game.Workspace.Music.TimeLength, 0, 0.7, 0)
 
 		for _, v in pairs(Notes:GetChildren()) do
 			
-			v.Position = UDim2.new(v.Position.X.Scale, 0, v.Position.Y.Scale+(delta*ScrollSpeed), 0)
+			v.Position = UDim2.new(v.Position.X.Scale, 0, v.Position.Y.Scale + (delta * ScrollSpeed), 0)
 			
 			if v:FindFirstChild("Base") then
 				if v.ImageTransparency == 1 then
