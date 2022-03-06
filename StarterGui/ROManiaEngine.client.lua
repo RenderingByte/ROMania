@@ -75,7 +75,7 @@ local AccuracyInfo = {
 	["Marvelous"] = 1.00,
 }
 
-CountdownLength = 3
+local CountdownLength = 3
 
 function Start()
 
