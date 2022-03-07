@@ -98,12 +98,11 @@ function Start()
 	AccuracyText.Visible = true
 	JudgementText.Visible = true
 
+	Playing = true
 	delay(0,function() RenderNotes() end); wait(1/ScrollSpeed)
 
 	game.Workspace.Music.SoundId = "rbxassetid://"..CurrentMap.id
 	game.Workspace.Music:Play()
-
-	Playing = true
 end
 
 function Reset()
@@ -257,29 +256,32 @@ function RenderNotes()
 
 	for i=1, #CurrentMap.notes do
 		
-		time = last + (CurrentMap.notes[i][1]/1000) + (CurrentMap.offset/1000)
-		if tick() <= time then repeat RunService.RenderStepped:Wait() until tick() > time end
-		
-		if CurrentMap.notes[i][3] then
+		if Playing then
 
-			local note = Resources.Hold:Clone()
-			note.Name = CurrentMap.notes[i][2]
-			note.Parent = Notes
-			note.AnchorPoint = JudgementLine[CurrentMap.notes[i][2]].AnchorPoint
-			note.Position = UDim2.new(JudgementLine[CurrentMap.notes[i][2]].Position.X.Scale,0,-0.2,0)
+			time = last + (CurrentMap.notes[i][1]/1000) + (CurrentMap.offset/1000)
+			if tick() <= time then repeat RunService.RenderStepped:Wait() until tick() > time end
 			
-			local tail = note.Base.Tail
-			tail.Size = UDim2.new(tail.Size.X.Scale,0,(CurrentMap.notes[i][3]/100)*ScrollSpeed,0)
-			
-			local endpoint = note.Base.Endpoint
-			endpoint.Position = UDim2.new(0,0,-tail.Size.Y.Scale,0)
-		else
-			local note = Resources.Note:Clone()
-			note.Name = CurrentMap.notes[i][2]
-			note.Parent = Notes
-			note.AnchorPoint = JudgementLine[CurrentMap.notes[i][2]].AnchorPoint
-			note.Position = UDim2.new(JudgementLine[CurrentMap.notes[i][2]].Position.X.Scale,0,-0.2,0)
-		end
+			if CurrentMap.notes[i][3] then
+
+				local note = Resources.Hold:Clone()
+				note.Name = CurrentMap.notes[i][2]
+				note.Parent = Notes
+				note.AnchorPoint = JudgementLine[CurrentMap.notes[i][2]].AnchorPoint
+				note.Position = UDim2.new(JudgementLine[CurrentMap.notes[i][2]].Position.X.Scale,0,-0.2,0)
+				
+				local tail = note.Base.Tail
+				tail.Size = UDim2.new(tail.Size.X.Scale,0,(CurrentMap.notes[i][3]/100)*ScrollSpeed,0)
+				
+				local endpoint = note.Base.Endpoint
+				endpoint.Position = UDim2.new(0,0,-tail.Size.Y.Scale,0)
+			else
+				local note = Resources.Note:Clone()
+				note.Name = CurrentMap.notes[i][2]
+				note.Parent = Notes
+				note.AnchorPoint = JudgementLine[CurrentMap.notes[i][2]].AnchorPoint
+				note.Position = UDim2.new(JudgementLine[CurrentMap.notes[i][2]].Position.X.Scale,0,-0.2,0)
+			end
+		else return end
 	end
 
 	wait(3) -- map completed, wait x
