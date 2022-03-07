@@ -5,7 +5,7 @@
   <a href="https://www.roblox.com/games/5033496513/ROMania">
       <img src="https://img.shields.io/badge/Roblox-red?style=for-the-badge&logo=roblox&logoColor=white" alt="Roblox Badge"/>
   </a>
-  <a href="https://discord.gg/kEUwgRznKg">
+  <a href="https://discord.gg/7Kbe8q5PPd">
       <img src="https://img.shields.io/badge/Discord-blue?style=for-the-badge&logo=discord&logoColor=white" alt="Discord Badge"/>
   </a>
 </div>
