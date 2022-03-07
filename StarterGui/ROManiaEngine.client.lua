@@ -67,12 +67,11 @@ local ScoreInfo = {
 }
 
 local AccuracyInfo = {
-	["Miss"] = 0,
-	["Bad"] = 0.50,
-	["Good"] = 0.75,
-	["Great"] = 0.90,
-	["Perfect"] = 1.00,
-	["Marvelous"] = 1.00,
+	["Bad"] = 75,
+	["Good"] = 80,
+	["Great"] = 95,
+	["Perfect"] = 100,
+	["Marvelous"] = 100,
 }
 
 local CountdownLength = 3
@@ -109,7 +108,7 @@ end
 
 function Reset()
 
-	for i,v in pairs(PlayInfo) do PlayInfo[i] = 0 end
+	for i,_ in pairs(PlayInfo) do PlayInfo[i] = 0 end
 	PlayInfo["Health"] = 100
 
 	for _,v in pairs(Notes:GetChildren()) do v:Destroy() end
@@ -161,6 +160,8 @@ function JudgeHit(close)
 			miss.Parent = game.Workspace
 			miss:Destroy()
 
+			return
+
 		elseif (close <= JudgementInfo["Bad"] and close >= 0) or (close <= JudgementInfo["Bad"] * -1 and close <= 0) then
 
 			if (close <= JudgementInfo["Good"] and close >= 0) or (close <= JudgementInfo["Good"] * -1 and close <= 0) then
@@ -174,41 +175,34 @@ function JudgeHit(close)
 							JudgementText.Text = "Marvelous"
 							PlayInfo["Marvelouses"] += 1
 							PlayInfo["Score"] += ScoreInfo["Marvelous"]
-							PlayInfo["Combo"] += 1
 							PlayInfo["Health"] += 5
 						end
 					else
 						JudgementText.Text = "Perfect"
 						PlayInfo["Perfects"] += 1
 						PlayInfo["Score"] += ScoreInfo["Perfect"]
-						PlayInfo["Combo"] += 1
 						PlayInfo["Health"] += 3
 					end
 				else
 					JudgementText.Text = "Great"
 					PlayInfo["Greats"] += 1
 					PlayInfo["Score"] += ScoreInfo["Great"]
-					PlayInfo["Combo"] += 1
 					PlayInfo["Health"] -= 2
 				end
 			else 
 				JudgementText.Text = "Good"
 				PlayInfo["Goods"] += 1
 				PlayInfo["Score"] += ScoreInfo["Good"]
-				PlayInfo["Combo"] += 1
 				PlayInfo["Health"] -= 5
 			end
 		else
 			JudgementText.Text = "Bad"
 			PlayInfo["Bads"] += 1
 			PlayInfo["Score"] += ScoreInfo["Bad"]
-			PlayInfo["Combo"] += 1
 			PlayInfo["Health"] -= 8
 		end
+		PlayInfo["Combo"] += 1
 	end
-
-	ComboText.Text = PlayInfo["Combo"]
-	ScoreText.Text = PlayInfo["Score"]
 end
 
 function PlayEffect(key, transparency)
@@ -245,15 +239,12 @@ function KeyPress(key, ispressed)
 				else
 					target:Destroy()
 				end
-
+				
+				-- Judge both hold & release
 				JudgeHit(close)
 			end
 		elseif not ispressed and target.ImageTransparency == 1 then
-
 			target:Destroy();
-			PlayInfo["Combo"] += 1
-			ComboText.Text = PlayInfo["Combo"]
-
 			JudgeHit(close)
 		end
 	end
@@ -298,11 +289,14 @@ end
 RunService.RenderStepped:Connect(function(delta)
 	if Playing then
 
-		PlayInfo["Accuracy"] = ((PlayInfo["Marvelouses"] * AccuracyInfo["Marvelous"]) + (PlayInfo["Perfects"] * AccuracyInfo["Perfect"]) + (PlayInfo["Greats"] * AccuracyInfo["Great"]) + (PlayInfo["Goods"] * AccuracyInfo["Good"]) + (PlayInfo["Bads"] * AccuracyInfo["Bad"]) + (PlayInfo["Misses"] * AccuracyInfo["Miss"])) / PlayInfo["Marvelouses"] + PlayInfo["Perfects"]+ PlayInfo["Greats"] + PlayInfo["Goods"] + PlayInfo["Bads"] + PlayInfo["Misses"]
-		PlayInfo["Accuracy"] *= 100
-		PlayInfo["Accuracy"] = math.floor(PlayInfo["Accuracy"])
-		PlayInfo["Accuracy"] = PlayInfo["Accuracy"] / 100
-		AccuracyText.Text = (100-PlayInfo["Accuracy"]).."%"
+		ComboText.Text = PlayInfo["Combo"]
+		ScoreText.Text = PlayInfo["Score"]
+
+		PlayInfo["Accuracy"] = (AccuracyInfo["Marvelous"] * PlayInfo["Marvelouses"] + AccuracyInfo["Perfect"] * PlayInfo["Perfects"] + AccuracyInfo["Great"] * PlayInfo["Greats"] + AccuracyInfo["Good"] * PlayInfo["Goods"] + AccuracyInfo["Bad"] * PlayInfo["Bads"]) / (PlayInfo["Marvelouses"] + PlayInfo["Perfects"] + PlayInfo["Greats"] + PlayInfo["Goods"] + PlayInfo["Bads"] + PlayInfo["Misses"])
+		
+		-- NaN Bypass
+		if PlayInfo["Accuracy"] ~= PlayInfo["Accuracy"] then PlayInfo["Accuracy"] = 0 end
+		AccuracyText.Text = (tonumber(string.format("%." .. 2 .. "f", PlayInfo["Accuracy"]))).."%"
 
 		if PlayInfo["Health"] >= 100 then PlayInfo["Health"] = 100 end
 		if PlayInfo["Health"] <= 0 then Reset() end
