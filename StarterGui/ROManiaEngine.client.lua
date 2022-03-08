@@ -13,13 +13,13 @@ local UserInputService = game:GetService("UserInputService")
 local Maps = ReplicatedStorage.Maps
 local Resources = ReplicatedStorage.Resources
 
-local MainMenu = script.Parent.MainMenu
+local MainMenu = script.Parent:WaitForChild("MainMenu")
 
-local SongSelect = script.Parent.SongSelect
+local SongSelect = script.Parent:WaitForChild("SongSelect")
 local PlayBtn = SongSelect.BG.Play
 local BackBtn = SongSelect.BG.Back
 
-local PlayField = script.Parent.Playfield
+local PlayField = script.Parent:WaitForChild("Playfield")
 local PlayFieldBG = PlayField.Container.BG
 local Notes = PlayField.Container.Notes
 local JudgementLine = PlayFieldBG.JudgementLine
@@ -28,9 +28,20 @@ local ComboText = PlayField.Container.ComboText
 local ScoreText = PlayField.Container.ScoreText
 local AccuracyText = PlayField.Container.AccuracyText
 
-local CurrentMap = ReplicatedStorage.Values.CurrentMap.Value
-local ScrollSpeed = ReplicatedStorage.Values.ScrollSpeed.Value/10
-local EffectSpeed = ReplicatedStorage.Values.EffectSpeed.Value
+local Results = script.Parent:WaitForChild("Results")
+local ResultsScore = Results.BG.Score
+local ResultsAccuracy = Results.BG.Accuracy
+local ResultsDifficulty = Results.BG.Difficulty
+local ResultsMarvelouses = Results.BG.Marvelouses
+local ResultsPerfects = Results.BG.Perfects
+local ResultsGreats = Results.BG.Greats
+local ResultsGoods = Results.BG.Goods
+local ResultsBads = Results.BG.Bads
+local ResultsMisses = Results.BG.Misses
+
+local CurrentMap = Player.CurrentMap.Value
+local ScrollSpeed = Player.ScrollSpeed.Value/10
+local EffectSpeed = Player.EffectSpeed.Value
 
 local Playing = false
 local PlayInfo = {
@@ -108,7 +119,7 @@ end
 function Reset()
 
 	for i,_ in pairs(PlayInfo) do PlayInfo[i] = 0 end
-	PlayInfo["Health"] = 100
+	PlayInfo["Health"] = 50
 
 	for _,v in pairs(Notes:GetChildren()) do v:Destroy() end
 	game.Workspace.Music:Stop()
@@ -123,6 +134,7 @@ function Reset()
 
 	SongSelect.Enabled = false
 	PlayField.Enabled = false
+	Results.Enabled = false
 	MainMenu.Enabled = true
 
 	MainMenu.BG.NowPlaying.NowPlayingHandler.Disabled = true
@@ -284,8 +296,22 @@ function RenderNotes()
 		else return end
 	end
 
-	wait(3) -- map completed, wait x
-	Reset()
+	wait(3)
+
+	PlayField.Enabled = false
+	Results.Enabled = true
+
+	ResultsScore.Text = "Total Score: "..PlayInfo["Score"]
+	ResultsAccuracy.Text = "Accuracy: "..PlayInfo["Accuracy"]
+	ResultsDifficulty.Text = "Difficulty: ".."0" -- soon
+	ResultsMarvelouses.Text = "Marvelouses: "..PlayInfo["Marvelouses"]
+	ResultsPerfects.Text = "Perfects: "..PlayInfo["Perfects"]
+	ResultsGreats.Text = "Greats: "..PlayInfo["Greats"]
+	ResultsGoods.Text = "Goods: "..PlayInfo["Goods"]
+	ResultsBads.Text = "Bads: "..PlayInfo["Bads"]
+	ResultsMisses.Text = "Misses: "..PlayInfo["Misses"]
+
+	-- Possibly Add M/A & P/A Calculations in the future
 end
 
 RunService.RenderStepped:Connect(function(delta)
@@ -369,15 +395,20 @@ UserInputService.InputEnded:Connect(function(input)
 end)
 
 PlayBtn.MouseButton1Click:Connect(function()
-	if ReplicatedStorage.Values.CurrentMap.Value ~= nil and ReplicatedStorage.Values.CurrentMap.Value ~= "" then
-		CurrentMap = ReplicatedStorage.Values.CurrentMap.Value
-		if game.Players.LocalPlayer.PlayerGui.MenuMusic then game.Players.LocalPlayer.PlayerGui.MenuMusic:Destroy() end
+	if Player.CurrentMap.Value ~= nil and Player.CurrentMap.Value ~= "" then
+		CurrentMap = Player.CurrentMap.Value
+		if Player.PlayerGui.MenuMusic then Player.PlayerGui.MenuMusic:Destroy() end
 		game.Workspace.Click:Play()
 		Start() 
 	end
 end)
 
 BackBtn.MouseButton1Click:Connect(function()
+	game.Workspace.Click:Play()
+	Reset()
+end)
+
+Results.BG.Back.MouseButton1Click:Connect(function()
 	game.Workspace.Click:Play()
 	Reset()
 end)

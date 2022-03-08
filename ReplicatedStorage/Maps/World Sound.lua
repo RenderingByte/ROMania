@@ -10,7 +10,7 @@ module.id = 2820712458
 module.offset = 0
 
 module.bgid = "0"
-module.difficulty = 0
+module.difficulty = 48
 
 module.notes = {
 	{286,1};

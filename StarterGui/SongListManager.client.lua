@@ -27,15 +27,15 @@ for _, v in pairs(ReplicatedStorage.Maps:GetChildren()) do
 			end
 		end
 
-		ReplicatedStorage.Values.CurrentMap.Value = v.Name
+		game.Players.LocalPlayer.CurrentMap.Value = v.Name
 
 		SongInfo.SongName.Text = v.Name
 		SongInfo.SongMapArtist.Text = module.songartist.." | "..module.mapcreator
 		SongInfo.DifficultyName.Text = module.mapdiff
-		SongInfo.Difficulty.Text = module.difficulty
-		SongInfo.Objects.Text = notes+holds
-		SongInfo.Notes.Text = notes
-		SongInfo.Holds.Text = holds
+		SongInfo.Difficulty.Text = "Difficulty: "..module.difficulty
+		SongInfo.Objects.Text = "Objects: "..notes+holds
+		SongInfo.Notes.Text = "Notes: "..notes
+		SongInfo.Holds.Text = "Holds: "..holds
 		SongInfo.Background.Image = "rbxassetid://"..module.bgid
 
 		if game.Players.LocalPlayer.PlayerGui:FindFirstChild("MenuMusic") then
