@@ -3,7 +3,9 @@ local MainMenu = script.Parent.MainMenu
 local SongSelect = script.Parent.SongSelect
 local PlayField = script.Parent.Playfield
 local Results = script.Parent:WaitForChild("Results")
+local Options = script.Parent:WaitForChild("Options")
 
+local Players = game:GetService("Players")
 local DBRemote = game:GetService("ReplicatedStorage").Remotes:WaitForChild("Database")
 
 local clicked = true
@@ -49,6 +51,22 @@ MainMenu.BG.Play.MouseLeave:Connect(function()
 	MainMenu.BG.Play.TextColor3 = Color3.fromRGB(255,255,255)
 end)
 
+MainMenu.BG.Options.MouseButton1Click:Connect(function()
+	game.Workspace.Click:Play()
+	MainMenu.Enabled = false
+	Options.Enabled = true
+end)
+
+MainMenu.BG.Options.MouseEnter:Connect(function()
+	game.Workspace.Hover:Play()
+	MainMenu.BG.Options.TextColor3 = Color3.fromRGB(0,255,0)
+end)
+
+MainMenu.BG.Options.MouseLeave:Connect(function()
+	MainMenu.BG.Options.TextColor3 = Color3.fromRGB(255,255,255)
+end)
+
+
 -- Song Select
 
 SongSelect.BG.Back.MouseEnter:Connect(function()
@@ -69,8 +87,59 @@ SongSelect.BG.Play.MouseLeave:Connect(function()
 	SongSelect.BG.Play.TextColor3 = Color3.fromRGB(255,255,255)
 end)
 
--- TEMP [WIP to be implemented in options page]:
-while wait(5) do
+-- Options
+
+for i=1, 4 do
+	Options.BG.Keybinds[i].Text = game.Players.LocalPlayer.Keybinds[i].Value
+end
+
+function UpdateKeybind(j)
+	game.Players.LocalPlayer:GetMouse().KeyDown:Connect(function(key)
+		
+		local found = false
+		for _,v in pairs(game.Players.LocalPlayer.Keybinds:GetChildren()) do
+			if string.upper(v.Value) == string.upper(key) then
+				found = true
+
+				local i = Options.BG.Keybinds[j].Text
+				Options.BG.Keybinds[j].Text = string.upper(key)
+				Options.BG.Keybinds[v.Name].Text = i
+			end
+		end
+
+		if not found then
+			Options.BG.Keybinds[j].Text = string.upper(key)
+		end
+
+		for i=1, 4 do
+			game.Players.LocalPlayer.Keybinds[i].Value = Options.BG.Keybinds[i].Text
+		end
+	end)
+end
+
+Options.BG.Keybinds["1"].MouseButton1Click:Connect(function()
+	UpdateKeybind(1)
+end)
+
+Options.BG.Keybinds["2"].MouseButton1Click:Connect(function()
+	UpdateKeybind(2)
+end)
+
+Options.BG.Keybinds["3"].MouseButton1Click:Connect(function()
+	UpdateKeybind(3)
+end)
+
+Options.BG.Keybinds["4"].MouseButton1Click:Connect(function()
+	UpdateKeybind(4)
+end)
+
+Options.BG.Save.MouseButton1Click:Connect(function()
+	game:GetService("StarterGui"):SetCore("SendNotification", {
+		Title = "Saving",
+		Text = "Saving Your Settings. Please Wait.",
+		Duration = 3
+	})
+	game.Workspace.Click:Play()
 	local success = DBRemote:InvokeServer("Set")
 	if success then
 		game:GetService("StarterGui"):SetCore("SendNotification", {
@@ -78,5 +147,13 @@ while wait(5) do
 			Text = "Your settings have been saved.",
 			Duration = 5
 		})
+		Options.Enabled = false
+		MainMenu.Enabled = true
+	else
+		game:GetService("StarterGui"):SetCore("SendNotification", {
+			Title = "Settings Not Saved",
+			Text = "An error occured while saving your settings. No changes were made.",
+			Duration = 5
+		})
 	end
-end
+end)
