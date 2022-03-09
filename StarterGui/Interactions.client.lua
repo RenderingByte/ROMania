@@ -4,6 +4,8 @@ local SongSelect = script.Parent.SongSelect
 local PlayField = script.Parent.Playfield
 local Results = script.Parent:WaitForChild("Results")
 
+local DBRemote = game:GetService("ReplicatedStorage").Remotes:WaitForChild("Database")
+
 local clicked = true
 
 -- Startup
@@ -66,3 +68,15 @@ end)
 SongSelect.BG.Play.MouseLeave:Connect(function()
 	SongSelect.BG.Play.TextColor3 = Color3.fromRGB(255,255,255)
 end)
+
+-- TEMP [WIP to be implemented in options page]:
+while wait(5) do
+	local success = DBRemote:InvokeServer("Set")
+	if success then
+		game:GetService("StarterGui"):SetCore("SendNotification", {
+			Title = "Saved Successfully",
+			Text = "Your settings have been saved.",
+			Duration = 5
+		})
+	end
+end

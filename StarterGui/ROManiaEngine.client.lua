@@ -92,6 +92,9 @@ function Start()
 	if not Maps[CurrentMap]:IsA("ModuleScript") then warn("Failed To Load Map: "..CurrentMap); Reset(); return end
 	CurrentMap = require(Maps[CurrentMap])
 
+	local ScrollSpeed = Player.ScrollSpeed.Value/10
+	local EffectSpeed = Player.EffectSpeed.Value
+
 	SongSelect.Enabled = false
 	PlayField.Enabled = true
 	
