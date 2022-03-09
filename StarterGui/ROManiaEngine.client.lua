@@ -296,7 +296,7 @@ function RenderNotes()
 				note.AnchorPoint = JudgementLine[CurrentMap.notes[i][2]].AnchorPoint
 				note.Position = UDim2.new(JudgementLine[CurrentMap.notes[i][2]].Position.X.Scale,0,-0.2,0)
 			end
-		else return end
+		else break end
 	end
 
 	wait(3)
@@ -315,6 +315,7 @@ function RenderNotes()
 	ResultsMisses.Text = "Misses: "..PlayInfo["Misses"]
 
 	-- Possibly Add M/A & P/A Calculations in the future
+	-- Judgement counts do not display correctly :cold_face:
 end
 
 RunService.RenderStepped:Connect(function(delta)
