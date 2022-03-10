@@ -89,6 +89,8 @@ end)
 
 -- Options
 
+local accepting_binds = false
+
 for i=1, 4 do
 	Options.BG.Keybinds[i].Text = game.Players.LocalPlayer.Keybinds[i].Value
 end
@@ -96,14 +98,19 @@ end
 function UpdateKeybind(j)
 	game.Players.LocalPlayer:GetMouse().KeyDown:Connect(function(key)
 		
+		if not accepting_binds then return end
+
 		local found = false
 		for _,v in pairs(game.Players.LocalPlayer.Keybinds:GetChildren()) do
 			if string.upper(v.Value) == string.upper(key) then
 				found = true
 
-				local i = Options.BG.Keybinds[j].Text
-				Options.BG.Keybinds[j].Text = string.upper(key)
-				Options.BG.Keybinds[v.Name].Text = i
+				local m = Options.BG.Keybinds[v.Name]
+				local c = Options.BG.Keybinds[j]
+				
+				m.Text = c.Text
+				c.Text = string.upper(key)
+				break
 			end
 		end
 
@@ -114,22 +121,28 @@ function UpdateKeybind(j)
 		for i=1, 4 do
 			game.Players.LocalPlayer.Keybinds[i].Value = Options.BG.Keybinds[i].Text
 		end
+
+		accepting_binds = false
 	end)
 end
 
 Options.BG.Keybinds["1"].MouseButton1Click:Connect(function()
+	accepting_binds = true
 	UpdateKeybind(1)
 end)
 
 Options.BG.Keybinds["2"].MouseButton1Click:Connect(function()
+	accepting_binds = true
 	UpdateKeybind(2)
 end)
 
 Options.BG.Keybinds["3"].MouseButton1Click:Connect(function()
+	accepting_binds = true
 	UpdateKeybind(3)
 end)
 
 Options.BG.Keybinds["4"].MouseButton1Click:Connect(function()
+	accepting_binds = true
 	UpdateKeybind(4)
 end)
 
