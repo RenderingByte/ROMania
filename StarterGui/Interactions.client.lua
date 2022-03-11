@@ -6,7 +6,9 @@ local Results = script.Parent:WaitForChild("Results")
 local Options = script.Parent:WaitForChild("Options")
 
 local Players = game:GetService("Players")
+
 local DBRemote = game:GetService("ReplicatedStorage").Remotes:WaitForChild("Database")
+local KeybindRemote = game:GetService("ReplicatedStorage").Remotes:WaitForChild("UpdateKeybind")
 
 local clicked = true
 
@@ -153,6 +155,9 @@ Options.BG.Save.MouseButton1Click:Connect(function()
 		Duration = 3
 	})
 	game.Workspace.Click:Play()
+
+	local success = KeybindRemote:FireServer(game.Players.LocalPlayer.Keybinds["1"].Value, game.Players.LocalPlayer.Keybinds["2"].Value, game.Players.LocalPlayer.Keybinds["3"].Value, game.Players.LocalPlayer.Keybinds["4"].Value)
+
 	local success = DBRemote:InvokeServer("Set")
 	if success then
 		game:GetService("StarterGui"):SetCore("SendNotification", {

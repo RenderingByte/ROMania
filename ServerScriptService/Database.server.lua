@@ -41,8 +41,8 @@ local function Set(player)
 	    player.ScrollSpeed.Value;
         player.EffectSpeed.Value;
 	}
-	
-	local success, err = pcall(function() ROManiaDB:SetAsync(player.UserId, dbinfo) end)
+
+    local success, err = pcall(function() ROManiaDB:SetAsync(player.UserId, dbinfo) end)
 	
 	if success then
 		print("Data has been saved!")
