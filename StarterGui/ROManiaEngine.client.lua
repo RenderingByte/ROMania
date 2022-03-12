@@ -306,7 +306,7 @@ function RenderNotes()
 
 	ResultsScore.Text = "Total Score: "..PlayInfo["Score"]
 	ResultsAccuracy.Text = "Accuracy: "..PlayInfo["Accuracy"]
-	ResultsDifficulty.Text = "Difficulty: ".."0" -- soon
+	ResultsDifficulty.Text = "Difficulty: ".. CurrentMap.difficulty/(PlayInfo["Accuracy"]/10)
 	ResultsMarvelouses.Text = "Marvelouses: "..PlayInfo["Marvelouses"]
 	ResultsPerfects.Text = "Perfects: "..PlayInfo["Perfects"]
 	ResultsGreats.Text = "Greats: "..PlayInfo["Greats"]
