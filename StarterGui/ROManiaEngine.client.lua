@@ -382,7 +382,7 @@ RunService.RenderStepped:Connect(function(delta)
 end)
 
 UserInputService.InputBegan:Connect(function(input)		
-	for _,v in pairs(ReplicatedStorage.Values.Keybinds:GetChildren()) do
+	for _,v in pairs(game.Players.LocalPlayer.Keybinds:GetChildren()) do
 		if input.KeyCode == Enum.KeyCode[v.Value] then
 			if Playing then
 
@@ -400,7 +400,7 @@ UserInputService.InputBegan:Connect(function(input)
 end)
 
 UserInputService.InputEnded:Connect(function(input)
-	for _,v in pairs(ReplicatedStorage.Values.Keybinds:GetChildren()) do
+	for _,v in pairs(game.Players.LocalPlayer.Keybinds:GetChildren()) do
 		if input.KeyCode == Enum.KeyCode[v.Value] then
 			PlayEffect(v.Name, 1); KeyPress(v.Name, false)
 			return
