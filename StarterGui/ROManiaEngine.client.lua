@@ -142,11 +142,11 @@ function Reset()
 		if PlayInfo["Failed"] then
 			Results.BG.Passed.TextColor3 = Color3.new(1,0,0)
 			Results.BG.Passed.Text = "Failed"
-			Player.FailMusic:Play()
+			Resources.FailMusic:Play()
 		else
 			Results.BG.Passed.TextColor3 = Color3.new(0,1,0)
 			Results.BG.Passed.Text = "Passed"
-			Player.PassMusic:Play()
+			Resources.PassMusic:Play()
 		end
 		Results.BG.Score.Text = "Total Score: "..PlayInfo["Score"]
 		Results.BG.Accuracy.Text = "Accuracy: "..PlayInfo["Accuracy"]
