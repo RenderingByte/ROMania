@@ -4,6 +4,7 @@ local SongSelect = script.Parent.SongSelect
 local PlayField = script.Parent.Playfield
 local Results = script.Parent:WaitForChild("Results")
 local Options = script.Parent:WaitForChild("Options")
+local About = script.Parent:WaitForChild("About")
 
 local Players = game:GetService("Players")
 
@@ -66,6 +67,22 @@ end)
 
 MainMenu.BG.Options.MouseLeave:Connect(function()
 	MainMenu.BG.Options.TextColor3 = Color3.fromRGB(255,255,255)
+end)
+
+MainMenu.BG.About.MouseButton1Click:Connect(function()
+	game.Workspace.Click:Play()
+	MainMenu.Enabled = false
+	About.Enabled = true
+	MainMenu.BG.Abut.TextColor3 = Color3.fromRGB(255,255,255)
+end)
+
+MainMenu.BG.About.MouseEnter:Connect(function()
+	game.Workspace.Hover:Play()
+	MainMenu.BG.About.TextColor3 = Color3.fromRGB(0,255,0)
+end)
+
+MainMenu.BG.About.MouseLeave:Connect(function()
+	MainMenu.BG.About.TextColor3 = Color3.fromRGB(255,255,255)
 end)
 
 -- Song Select
@@ -195,4 +212,11 @@ Options.BG.Save.MouseButton1Click:Connect(function()
 			Duration = 5
 		})
 	end
+end)
+
+-- About
+
+About.BG.Close.MouseButton1Click:Connect(function()
+	About.Enabled = false
+	MainMenu.Enabled = true
 end)
