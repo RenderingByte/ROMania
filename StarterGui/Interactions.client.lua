@@ -168,6 +168,14 @@ Options.BG.General.Keybinds["4"].MouseButton1Click:Connect(function()
 	UpdateKeybind(4)
 end)
 
+Options.BG.General.ScrollSpeed.Input:GetPropertyChangedSignal("Text"):Connect(function()
+	Options.BG.General.ScrollSpeed.Input.Text = Options.BG.General.ScrollSpeed.Input.Text:gsub('%D+', '')
+end)
+
+Options.BG.General.EffectSpeed.Input:GetPropertyChangedSignal("Text"):Connect(function()
+	Options.BG.General.EffectSpeed.Input.Text = Options.BG.General.EffectSpeed.Input.Text:gsub('%D+', '')
+end)
+
 Options.BG.Categories.General.MouseButton1Click:Connect(function()
 	Options.BG.General.Visible = true
 end)

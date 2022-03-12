@@ -7,7 +7,7 @@ module.mapdiff = "drum & streams"
 module.mapcreator = "Jole"
 
 module.id = 9075211105
-module.offset = 0
+module.offset = -20000
 
 module.bgid = "0"
 module.difficulty = 39

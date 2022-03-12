@@ -13,7 +13,6 @@ module.bgid = "1464473908"
 module.difficulty = 52
 
 module.notes = {
-	{2009,3};
 {2115,3};
 {2222,4};
 {2222,1};

@@ -29,15 +29,6 @@ local ScoreText = PlayField.Container.ScoreText
 local AccuracyText = PlayField.Container.AccuracyText
 
 local Results = script.Parent:WaitForChild("Results")
-local ResultsScore = Results.BG.Score
-local ResultsAccuracy = Results.BG.Accuracy
-local ResultsDifficulty = Results.BG.Difficulty
-local ResultsMarvelouses = Results.BG.Marvelouses
-local ResultsPerfects = Results.BG.Perfects
-local ResultsGreats = Results.BG.Greats
-local ResultsGoods = Results.BG.Goods
-local ResultsBads = Results.BG.Bads
-local ResultsMisses = Results.BG.Misses
 
 local CurrentMap = Player.CurrentMap.Value
 local ScrollSpeed = Player.ScrollSpeed.Value/10
@@ -57,13 +48,18 @@ local PlayInfo = {
 	["Greats"] = 0,
 	["Perfects"] = 0,
 	["Marvelouses"] = 0,
+
+	["MA"] = 0,
+	["PA"] = 0,
+
+	["Failed"] = nil,
 }
 
 local JudgementInfo = {
-	["Miss"] = 0.4,
-	["Bad"] = 0.3,
-	["Good"] = 0.2,
-	["Great"] = 0.1,
+	["Miss"] = 0.2,
+	["Bad"] = 0.15,
+	["Good"] = 0.125,
+	["Great"] = 0.075,
 	["Perfect"] = 0.05,
 	["Marvelous"] = 0.025,
 }
@@ -121,14 +117,14 @@ end
 
 function Reset()
 
-	for i,_ in pairs(PlayInfo) do PlayInfo[i] = 0 end
-	PlayInfo["Health"] = 50
-
+	Playing = false
 	for _,v in pairs(Notes:GetChildren()) do v:Destroy() end
 	game.Workspace.Music:Stop()
-
+	
 	PlayField.Container.Countdown.Text = "READY"
 	PlayField.Container.Countdown.Visible = true
+
+	JudgementText.Text = ""
 
 	ComboText.Visible = false
 	ScoreText.Visible = false
@@ -137,18 +133,45 @@ function Reset()
 
 	SongSelect.Enabled = false
 	PlayField.Enabled = false
-	Results.Enabled = false
-	MainMenu.Enabled = true
 
-	MainMenu.BG.NowPlaying.NowPlayingHandler.Disabled = true
-	MainMenu.BG.NowPlaying.NowPlayingHandler.Disabled = false
+	if PlayInfo["Failed"] ~= nil then
 
-	Playing = false
+		MainMenu.Enabled = false
+		Results.Enabled = true
+
+		if PlayInfo["Failed"] then
+			Results.BG.Passed.TextColor3 = Color3.new(1,0,0)
+			Results.BG.Passed.Text = "Failed"
+		else
+			Results.BG.Passed.TextColor3 = Color3.new(0,1,0)
+			Results.BG.Passed.Text = "Passed"
+		end
+		Results.BG.Score.Text = "Total Score: "..PlayInfo["Score"]
+		Results.BG.Accuracy.Text = "Accuracy: "..PlayInfo["Accuracy"]
+		Results.BG.Difficulty.Text = "Difficulty: ".. CurrentMap.difficulty/(PlayInfo["Accuracy"]/10)
+		Results.BG.Marvelouses.Text = "Marvelouses: "..PlayInfo["Marvelouses"]
+		Results.BG.Perfects.Text = "Perfects: "..PlayInfo["Perfects"]
+		Results.BG.Greats.Text = "Greats: "..PlayInfo["Greats"]
+		Results.BG.Goods.Text = "Goods: "..PlayInfo["Goods"]
+		Results.BG.Bads.Text = "Bads: "..PlayInfo["Bads"]
+		Results.BG.Misses.Text = "Misses: "..PlayInfo["Misses"]
+		Results.BG.MA.Text = "MA: "..PlayInfo["MA"]
+		Results.BG.PA.Text = "PA: "..PlayInfo["PA"]
+
+		-- Judgement counts do not display correctly :cold_face:
+	else
+		MainMenu.Enabled = true
+		Results.Enabled = false
+	end
+
+	for i,_ in pairs(PlayInfo) do PlayInfo[i] = 0 end
+	PlayInfo["Health"] = 50
+	PlayInfo["Failed"] = nil
 end
 
 function JudgeHit(close)
 
-	JudgementText.Size = UDim2.new(1, 0, 0.001, 0)
+	JudgementText.Size = UDim2.new(0.001, 0, 0.001, 0)
 
 	if close == "Miss" then
 
@@ -163,6 +186,10 @@ function JudgeHit(close)
 		local miss = ReplicatedStorage.Resources.Miss:Clone()
 		miss.Parent = game.Workspace
 		miss:Destroy()
+
+		JudgementText:TweenSize(UDim2.new(1, 0, 0.075, 0), Enum.EasingDirection.Out, Enum.EasingStyle.Back, 0.05, false)
+
+		return
 	else
 
 		if (close >= JudgementInfo["Miss"]) or (close <= JudgementInfo["Miss"] * -1) then
@@ -178,54 +205,92 @@ function JudgeHit(close)
 			miss.Parent = game.Workspace
 			miss:Destroy()
 
+			JudgementText:TweenSize(UDim2.new(1, 0, 0.075, 0), Enum.EasingDirection.Out, Enum.EasingStyle.Back, 0.05, false)
+
 			return
 
-		elseif (close <= JudgementInfo["Bad"] and close >= 0) or (close <= JudgementInfo["Bad"] * -1 and close <= 0) then
+		elseif (close < JudgementInfo["Miss"] and close >= 0) or (close <= JudgementInfo["Miss"] * -1 and close <= 0) then
 
-			if (close <= JudgementInfo["Good"] and close >= 0) or (close <= JudgementInfo["Good"] * -1 and close <= 0) then
+			if (close <= JudgementInfo["Bad"] and close >= 0) or (close <= JudgementInfo["Bad"] * -1 and close <= 0) then
 
-				if (close <= JudgementInfo["Great"] and close >= 0) or (close <= JudgementInfo["Great"] * -1 and close <= 0) then
+				if (close <= JudgementInfo["Good"] and close >= 0) or (close <= JudgementInfo["Good"] * -1 and close <= 0) then
 
-					if (close <= JudgementInfo["Perfect"] and close >= 0) or (close <= JudgementInfo["Perfect"] * -1 and close <= 0) then
+					if (close <= JudgementInfo["Great"] and close >= 0) or (close <= JudgementInfo["Great"] * -1 and close <= 0) then
 
-						if (close <= JudgementInfo["Marvelous"] and close >= 0) or (close <= JudgementInfo["Marvelous"] * -1 and close <= 0) then
+						if (close <= JudgementInfo["Perfect"] and close >= 0) or (close <= JudgementInfo["Perfect"] * -1 and close <= 0) then
 
-							JudgementText.TextColor3 = Color3.new(0,0.5,1)
-							JudgementText.Text = "Marvelous"
-							PlayInfo["Marvelouses"] += 1
-							PlayInfo["Score"] += ScoreInfo["Marvelous"]
-							PlayInfo["Health"] += 5
+							if (close <= JudgementInfo["Marvelous"] and close >= 0) or (close <= JudgementInfo["Marvelous"] * -1 and close <= 0) then
+								JudgementText.TextColor3 = Color3.new(0,0.5,1)
+								JudgementText.Text = "Marvelous"
+								PlayInfo["Marvelouses"] += 1
+								PlayInfo["Score"] += ScoreInfo["Marvelous"]
+								PlayInfo["Health"] += 5
+								PlayInfo["Combo"] += 1
+								JudgementText:TweenSize(UDim2.new(1, 0, 0.075, 0), Enum.EasingDirection.Out, Enum.EasingStyle.Back, 0.05, false)
+								return
+							else
+								JudgementText.TextColor3 = Color3.new(0,0.5,1)
+								JudgementText.Text = "Marvelous"
+								PlayInfo["Marvelouses"] += 1
+								PlayInfo["Score"] += ScoreInfo["Marvelous"]
+								PlayInfo["Health"] += 5
+								PlayInfo["Combo"] += 1
+								JudgementText:TweenSize(UDim2.new(1, 0, 0.075, 0), Enum.EasingDirection.Out, Enum.EasingStyle.Back, 0.05, false)
+								return
+							end
+						else
+							JudgementText.TextColor3 = Color3.new(1,1,0)
+							JudgementText.Text = "Perfect"
+							PlayInfo["Perfects"] += 1
+							PlayInfo["Score"] += ScoreInfo["Perfect"]
+							PlayInfo["Health"] += 3
+							PlayInfo["Combo"] += 1
+							JudgementText:TweenSize(UDim2.new(1, 0, 0.075, 0), Enum.EasingDirection.Out, Enum.EasingStyle.Back, 0.05, false)
+							return
 						end
 					else
-						JudgementText.TextColor3 = Color3.new(1,1,0)
-						JudgementText.Text = "Perfect"
-						PlayInfo["Perfects"] += 1
-						PlayInfo["Score"] += ScoreInfo["Perfect"]
-						PlayInfo["Health"] += 3
+						JudgementText.TextColor3 = Color3.new(0,1,0)
+						JudgementText.Text = "Great"
+						PlayInfo["Greats"] += 1
+						PlayInfo["Score"] += ScoreInfo["Great"]
+						PlayInfo["Health"] -= 2
+						PlayInfo["Combo"] += 1
+						JudgementText:TweenSize(UDim2.new(1, 0, 0.075, 0), Enum.EasingDirection.Out, Enum.EasingStyle.Back, 0.05, false)
+						return
 					end
 				else
-					JudgementText.TextColor3 = Color3.new(0,1,0)
-					JudgementText.Text = "Great"
-					PlayInfo["Greats"] += 1
-					PlayInfo["Score"] += ScoreInfo["Great"]
-					PlayInfo["Health"] -= 2
+					JudgementText.TextColor3 = Color3.fromRGB(255, 230, 0)
+					JudgementText.Text = "Good"
+					PlayInfo["Goods"] += 1
+					PlayInfo["Score"] += ScoreInfo["Good"]
+					PlayInfo["Health"] -= 5
+					PlayInfo["Combo"] += 1
+					JudgementText:TweenSize(UDim2.new(1, 0, 0.075, 0), Enum.EasingDirection.Out, Enum.EasingStyle.Back, 0.05, false)
+					return
 				end
 			else
-				JudgementText.TextColor3 = Color3.fromRGB(255, 230, 0)
-				JudgementText.Text = "Good"
-				PlayInfo["Goods"] += 1
-				PlayInfo["Score"] += ScoreInfo["Good"]
-				PlayInfo["Health"] -= 5
+				JudgementText.TextColor3 = Color3.fromRGB(255, 0, 128)
+				JudgementText.Text = "Bad"
+				PlayInfo["Bads"] += 1
+				PlayInfo["Score"] += ScoreInfo["Bad"]
+				PlayInfo["Health"] -= 8
+				PlayInfo["Combo"] += 1
+				JudgementText:TweenSize(UDim2.new(1, 0, 0.075, 0), Enum.EasingDirection.Out, Enum.EasingStyle.Back, 0.05, false)
+				return
 			end
 		else
-			JudgementText.TextColor3 = Color3.fromRGB(255, 0, 128)
-			JudgementText.Text = "Bad"
-			PlayInfo["Bads"] += 1
-			PlayInfo["Score"] += ScoreInfo["Bad"]
-			PlayInfo["Health"] -= 8
+			JudgementText.TextColor3 = Color3.new(1,0,0)
+			JudgementText.Text = "Miss"
+			PlayInfo["Misses"] += 1
+			PlayInfo["Score"] += ScoreInfo["Miss"]
+			PlayInfo["Health"] -= 10
+			PlayInfo["Combo"] = 0
+			JudgementText:TweenSize(UDim2.new(1, 0, 0.075, 0), Enum.EasingDirection.Out, Enum.EasingStyle.Back, 0.05, false)
+			local miss = ReplicatedStorage.Resources.Miss:Clone()
+			miss.Parent = game.Workspace
+			miss:Destroy()
+			return
 		end
-		PlayInfo["Combo"] += 1
-		JudgementText:TweenSize(UDim2.new(1, 0, 0.075, 0), Enum.EasingDirection.Out, Enum.EasingStyle.Back, 0.05, false)
 	end
 end
 
@@ -256,7 +321,7 @@ function KeyPress(key, ispressed)
 	
 	if target then
 		if ispressed and target.ImageTransparency == 0 then
-			if target.Position.Y.Scale >= 0.6-(0.2*ScrollSpeed) then
+			if target.Position.Y.Scale >= 0.8-(0.2*ScrollSpeed) then
 
 				if target:FindFirstChild("Base") then
 					target.ImageTransparency = 1
@@ -264,7 +329,7 @@ function KeyPress(key, ispressed)
 					target:Destroy()
 				end
 				
-				-- Judge both hold & release
+				-- Judge both hit & release
 				JudgeHit(close)
 			end
 		elseif not ispressed and target.ImageTransparency == 1 then
@@ -309,23 +374,12 @@ function RenderNotes()
 		else break end
 	end
 
-	wait(0.25)
+	wait(3)
 
-	PlayField.Enabled = false
-	Results.Enabled = true
-
-	ResultsScore.Text = "Total Score: "..PlayInfo["Score"]
-	ResultsAccuracy.Text = "Accuracy: "..PlayInfo["Accuracy"]
-	ResultsDifficulty.Text = "Difficulty: ".. CurrentMap.difficulty/(PlayInfo["Accuracy"]/10)
-	ResultsMarvelouses.Text = "Marvelouses: "..PlayInfo["Marvelouses"]
-	ResultsPerfects.Text = "Perfects: "..PlayInfo["Perfects"]
-	ResultsGreats.Text = "Greats: "..PlayInfo["Greats"]
-	ResultsGoods.Text = "Goods: "..PlayInfo["Goods"]
-	ResultsBads.Text = "Bads: "..PlayInfo["Bads"]
-	ResultsMisses.Text = "Misses: "..PlayInfo["Misses"]
-
-	-- Possibly Add M/A & P/A Calculations in the future
-	-- Judgement counts do not display correctly :cold_face:
+	if PlayField.Enabled == true then
+		PlayInfo["Failed"] = false
+		Reset()
+	end
 end
 
 RunService.RenderStepped:Connect(function(delta)
@@ -336,12 +390,15 @@ RunService.RenderStepped:Connect(function(delta)
 
 		PlayInfo["Accuracy"] = (AccuracyInfo["Marvelous"] * PlayInfo["Marvelouses"] + AccuracyInfo["Perfect"] * PlayInfo["Perfects"] + AccuracyInfo["Great"] * PlayInfo["Greats"] + AccuracyInfo["Good"] * PlayInfo["Goods"] + AccuracyInfo["Bad"] * PlayInfo["Bads"]) / (PlayInfo["Marvelouses"] + PlayInfo["Perfects"] + PlayInfo["Greats"] + PlayInfo["Goods"] + PlayInfo["Bads"] + PlayInfo["Misses"])
 		
+		PlayInfo["MA"] = PlayInfo["Marvelouses"] / PlayInfo["Perfects"]
+		PlayInfo["PA"] = PlayInfo["Perfects"] / PlayInfo["Greats"]
+
 		-- NaN Bypass
 		if PlayInfo["Accuracy"] ~= PlayInfo["Accuracy"] then PlayInfo["Accuracy"] = 0 end
 		AccuracyText.Text = (tonumber(string.format("%." .. 2 .. "f", PlayInfo["Accuracy"]))).."%"
 
 		if PlayInfo["Health"] >= 100 then PlayInfo["Health"] = 100 end
-		if PlayInfo["Health"] <= 0 then Reset() end
+		if PlayInfo["Health"] <= 0 then PlayInfo["Failed"] = true; Reset() end
 		PlayField.Container.HBarBG.HBar:TweenSize(UDim2.new(PlayInfo["Health"]/100, 0,1.1, 0), "Out", "Quint", 0.25)
 
 		PlayField.Container.PBarBG.PBar.Size = UDim2.new(game.Workspace.Music.TimePosition / game.Workspace.Music.TimeLength, 0, 0.7, 0)
@@ -396,7 +453,7 @@ UserInputService.InputBegan:Connect(function(input)
 		end
 	end
 
-	if input.KeyCode == Enum.KeyCode.Backspace and Playing then Reset() end
+	if input.KeyCode == Enum.KeyCode.Backspace and Playing then PlayInfo["Failed"] = true; Reset() end
 end)
 
 UserInputService.InputEnded:Connect(function(input)
@@ -424,7 +481,10 @@ end)
 
 Results.BG.Back.MouseButton1Click:Connect(function()
 	game.Workspace.Click:Play()
-	Reset()
+	Results.Enabled = false
+	MainMenu.Enabled = true
+	MainMenu.BG.NowPlaying.NowPlayingHandler.Disabled = true
+	MainMenu.BG.NowPlaying.NowPlayingHandler.Disabled = false
 end)
 
 Character:WaitForChild("Humanoid").Died:Connect(function() Reset() end)
