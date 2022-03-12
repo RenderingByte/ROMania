@@ -118,6 +118,7 @@ end)
 for i=1, 4 do Options.BG.General.Keybinds[i].Text = game.Players.LocalPlayer.Keybinds[i].Value end
 Options.BG.General.ScrollSpeed.Input.Text = game.Players.LocalPlayer.ScrollSpeed.Value
 Options.BG.General.HitLightingSpeed.Input.Text = game.Players.LocalPlayer.HitLightingSpeed.Value
+Options.BG.General.HitPosY.Input.Text = game.Players.LocalPlayer.HitPosY.Value
 
 local accepting_binds = false
 
