@@ -45,10 +45,10 @@ local function Set(player)
     local success, err = pcall(function() ROManiaDB:SetAsync(player.UserId, dbinfo) end)
 	
 	if success then
-		print("Data has been saved!")
+		print("Data saved for player "..player.Name)
         return true
 	else
-		print("Data hasn't been saved!")
+		print("Data NOT saved for player "..player.Name)
 		warn(err)
         return false
 	end
@@ -79,11 +79,6 @@ end)
 -- Manual Gets/Sets
 
 DBRemote.OnServerInvoke = function(player, action)
-    if action == "Get" then
-        local result = Get(player)
-        return result
-    elseif action == "Set" then
-        local result = Set(player)
-        return result
-    end
+    if action == "Get" then return Get(player)
+    elseif action == "Set" then return Set(player) end
 end

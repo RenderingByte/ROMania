@@ -26,7 +26,7 @@ end
 
 PlaySong()
 
-while wait(1) do
+while wait() do
 	if not song.IsPlaying then
 		song:Destroy()
 		script.Parent.SongName.Text = "Selecting Next Song..."
@@ -42,5 +42,12 @@ while wait(1) do
 		
 		script.Parent.SongName.Text = module.mapname.." ("..Time..")"
 		script.Parent.PBarBG.PBar.Size = UDim2.new(song.TimePosition / song.TimeLength, 0, 0.7, 0)
+
+		local volume = song.PlaybackLoudness * 0.6
+		for _,v in pairs(script.Parent.Parent.AV:GetChildren()) do
+			if not v:IsA("UIListLayout") then
+				v:TweenSize(UDim2.new(0.012,0,volume/math.random(300,750),0),"Out","Quad",0)
+			end
+		end
 	end
 end

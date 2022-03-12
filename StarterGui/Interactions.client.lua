@@ -8,14 +8,11 @@ local Options = script.Parent:WaitForChild("Options")
 local Players = game:GetService("Players")
 
 local DBRemote = game:GetService("ReplicatedStorage").Remotes:WaitForChild("Database")
-local KeybindRemote = game:GetService("ReplicatedStorage").Remotes:WaitForChild("UpdateKeybind")
-
-local clicked = true
+local OptionsRemote = game:GetService("ReplicatedStorage").Remotes:WaitForChild("UpdateOptions")
 
 -- Startup
 
 wait(2)
-
 Startup.BG.Title:TweenPosition(
 	UDim2.new(0.5, 0, 0.35, 0),
 	Enum.EasingDirection.In,
@@ -24,6 +21,7 @@ Startup.BG.Title:TweenPosition(
 	true
 )
 wait(1)
+
 Startup.BG.Status.Visible = true
 Startup.BG.PressAnyKey:TweenSizeAndPosition(UDim2.new(0.4, 0, 0.1, 0), UDim2.new(0.5, 0, 0.7, 0), Enum.EasingDirection.InOut, Enum.EasingStyle.Linear, 0.5)
 
@@ -42,6 +40,7 @@ MainMenu.BG.Play.MouseButton1Click:Connect(function()
 	game.Workspace.Click:Play()
 	MainMenu.Enabled = false
 	SongSelect.Enabled = true
+	MainMenu.BG.Options.TextColor3 = Color3.fromRGB(255,255,255)
 end)
 
 MainMenu.BG.Play.MouseEnter:Connect(function()
@@ -57,6 +56,7 @@ MainMenu.BG.Options.MouseButton1Click:Connect(function()
 	game.Workspace.Click:Play()
 	MainMenu.Enabled = false
 	Options.Enabled = true
+	MainMenu.BG.Options.TextColor3 = Color3.fromRGB(255,255,255)
 end)
 
 MainMenu.BG.Options.MouseEnter:Connect(function()
@@ -68,8 +68,11 @@ MainMenu.BG.Options.MouseLeave:Connect(function()
 	MainMenu.BG.Options.TextColor3 = Color3.fromRGB(255,255,255)
 end)
 
-
 -- Song Select
+
+SongSelect.BG.Back.MouseButton1Click:Connect(function()
+	SongSelect.BG.Play.TextColor3 = Color3.fromRGB(255,255,255)
+end)
 
 SongSelect.BG.Back.MouseEnter:Connect(function()
 	game.Workspace.Hover:Play()
@@ -78,6 +81,10 @@ end)
 
 SongSelect.BG.Back.MouseLeave:Connect(function()
 	SongSelect.BG.Back.TextColor3 = Color3.fromRGB(255,255,255)
+end)
+
+SongSelect.BG.Play.MouseButton1Click:Connect(function()
+	SongSelect.BG.Play.TextColor3 = Color3.fromRGB(255,255,255)
 end)
 
 SongSelect.BG.Play.MouseEnter:Connect(function()
@@ -91,11 +98,11 @@ end)
 
 -- Options
 
-local accepting_binds = false
+for i=1, 4 do Options.BG.General.Keybinds[i].Text = game.Players.LocalPlayer.Keybinds[i].Value end
+Options.BG.General.ScrollSpeed.Input.Text = game.Players.LocalPlayer.ScrollSpeed.Value
+Options.BG.General.EffectSpeed.Input.Text = game.Players.LocalPlayer.EffectSpeed.Value
 
-for i=1, 4 do
-	Options.BG.Keybinds[i].Text = game.Players.LocalPlayer.Keybinds[i].Value
-end
+local accepting_binds = false
 
 function UpdateKeybind(j)
 	game.Players.LocalPlayer:GetMouse().KeyDown:Connect(function(key)
@@ -107,8 +114,8 @@ function UpdateKeybind(j)
 			if string.upper(v.Value) == string.upper(key) then
 				found = true
 
-				local m = Options.BG.Keybinds[v.Name]
-				local c = Options.BG.Keybinds[j]
+				local m = Options.BG.General.Keybinds[v.Name]
+				local c = Options.BG.General.Keybinds[j]
 				
 				m.Text = c.Text
 				c.Text = string.upper(key)
@@ -117,35 +124,41 @@ function UpdateKeybind(j)
 		end
 
 		if not found then
-			Options.BG.Keybinds[j].Text = string.upper(key)
-		end
-
-		for i=1, 4 do
-			game.Players.LocalPlayer.Keybinds[i].Value = Options.BG.Keybinds[i].Text
+			Options.BG.General.Keybinds[j].Text = string.upper(key)
 		end
 
 		accepting_binds = false
 	end)
 end
 
-Options.BG.Keybinds["1"].MouseButton1Click:Connect(function()
+Options.BG.General.Keybinds["1"].MouseButton1Click:Connect(function()
 	accepting_binds = true
 	UpdateKeybind(1)
 end)
 
-Options.BG.Keybinds["2"].MouseButton1Click:Connect(function()
+Options.BG.General.Keybinds["2"].MouseButton1Click:Connect(function()
 	accepting_binds = true
 	UpdateKeybind(2)
 end)
 
-Options.BG.Keybinds["3"].MouseButton1Click:Connect(function()
+Options.BG.General.Keybinds["3"].MouseButton1Click:Connect(function()
 	accepting_binds = true
 	UpdateKeybind(3)
 end)
 
-Options.BG.Keybinds["4"].MouseButton1Click:Connect(function()
+Options.BG.General.Keybinds["4"].MouseButton1Click:Connect(function()
 	accepting_binds = true
 	UpdateKeybind(4)
+end)
+
+Options.BG.Categories.General.MouseButton1Click:Connect(function()
+	Options.BG.General.Visible = true
+end)
+
+Options.BG.Back.MouseButton1Click:Connect(function()
+	Options.BG.General.Visible = false
+	Options.Enabled = false
+	MainMenu.Enabled = true
 end)
 
 Options.BG.Save.MouseButton1Click:Connect(function()
@@ -156,17 +169,25 @@ Options.BG.Save.MouseButton1Click:Connect(function()
 	})
 	game.Workspace.Click:Play()
 
-	local success = KeybindRemote:FireServer(game.Players.LocalPlayer.Keybinds["1"].Value, game.Players.LocalPlayer.Keybinds["2"].Value, game.Players.LocalPlayer.Keybinds["3"].Value, game.Players.LocalPlayer.Keybinds["4"].Value)
+	OptionsRemote:FireServer(
+		Options.BG.General.Keybinds["1"].Text,
+		Options.BG.General.Keybinds["2"].Text,
+		Options.BG.General.Keybinds["3"].Text,
+		Options.BG.General.Keybinds["4"].Text,
+		Options.BG.General.ScrollSpeed.Input.Text,
+		Options.BG.General.EffectSpeed.Input.Text
+	)
 
 	local success = DBRemote:InvokeServer("Set")
 	if success then
-		game:GetService("StarterGui"):SetCore("SendNotification", {
-			Title = "Saved Successfully",
-			Text = "Your settings have been saved.",
-			Duration = 5
-		})
-		Options.Enabled = false
-		MainMenu.Enabled = true
+		success = DBRemote:InvokeServer("Get")
+		if success then
+			game:GetService("StarterGui"):SetCore("SendNotification", {
+				Title = "Saved Successfully",
+				Text = "Your settings have been saved.",
+				Duration = 5
+			})
+		end
 	else
 		game:GetService("StarterGui"):SetCore("SendNotification", {
 			Title = "Settings Not Saved",
