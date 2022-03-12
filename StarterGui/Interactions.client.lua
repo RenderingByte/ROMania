@@ -73,7 +73,7 @@ MainMenu.BG.About.MouseButton1Click:Connect(function()
 	game.Workspace.Click:Play()
 	MainMenu.Enabled = false
 	About.Enabled = true
-	MainMenu.BG.Abut.TextColor3 = Color3.fromRGB(255,255,255)
+	MainMenu.BG.About.TextColor3 = Color3.fromRGB(255,255,255)
 end)
 
 MainMenu.BG.About.MouseEnter:Connect(function()
