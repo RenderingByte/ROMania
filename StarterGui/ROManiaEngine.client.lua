@@ -32,7 +32,7 @@ local Results = script.Parent:WaitForChild("Results")
 
 local CurrentMap = Player.CurrentMap.Value
 local ScrollSpeed = Player.ScrollSpeed.Value/10
-local EffectSpeed = Player.EffectSpeed.Value
+local HitLightingSpeed = Player.HitLightingSpeed.Value
 
 local Playing = false
 local PlayInfo = {
@@ -89,7 +89,7 @@ function Start()
 	CurrentMap = require(Maps[CurrentMap])
 
 	ScrollSpeed = Player.ScrollSpeed.Value/10
-	EffectSpeed = Player.EffectSpeed.Value
+	HitLightingSpeed = Player.HitLightingSpeed.Value
 
 	SongSelect.Enabled = false
 	PlayField.Enabled = true
@@ -142,9 +142,11 @@ function Reset()
 		if PlayInfo["Failed"] then
 			Results.BG.Passed.TextColor3 = Color3.new(1,0,0)
 			Results.BG.Passed.Text = "Failed"
+			Player.FailMusic:Play()
 		else
 			Results.BG.Passed.TextColor3 = Color3.new(0,1,0)
 			Results.BG.Passed.Text = "Passed"
+			Player.PassMusic:Play()
 		end
 		Results.BG.Score.Text = "Total Score: "..PlayInfo["Score"]
 		Results.BG.Accuracy.Text = "Accuracy: "..PlayInfo["Accuracy"]
@@ -157,8 +159,6 @@ function Reset()
 		Results.BG.Misses.Text = "Misses: "..PlayInfo["Misses"]
 		Results.BG.MA.Text = "MA: "..PlayInfo["MA"]
 		Results.BG.PA.Text = "PA: "..PlayInfo["PA"]
-
-		-- Judgement counts do not display correctly :cold_face:
 	else
 		MainMenu.Enabled = true
 		Results.Enabled = false
@@ -295,7 +295,7 @@ function JudgeHit(close)
 end
 
 function PlayEffect(key, transparency)
-	TweenService:Create(JudgementLine[key].Effect, TweenInfo.new(EffectSpeed, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {ImageTransparency = transparency}):Play()
+	TweenService:Create(JudgementLine[key].Effect, TweenInfo.new(HitLightingSpeed, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {ImageTransparency = transparency}):Play()
 end
 
 function KeyPress(key, ispressed)

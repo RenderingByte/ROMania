@@ -17,7 +17,7 @@ local function Get(player)
         player.Keybinds["4"].Value = data[4]
 
 	    player.ScrollSpeed.Value = data[5]
-        player.EffectSpeed.Value = data[6]
+        player.HitLightingSpeed.Value = data[6]
 
         return true
     elseif success and not data then
@@ -39,7 +39,7 @@ local function Set(player)
         player.Keybinds["4"].Value;
 
 	    player.ScrollSpeed.Value;
-        player.EffectSpeed.Value;
+        player.HitLightingSpeed.Value;
 	}
 
     local success, err = pcall(function() ROManiaDB:SetAsync(player.UserId, dbinfo) end)

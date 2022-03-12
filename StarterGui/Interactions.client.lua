@@ -117,7 +117,7 @@ end)
 
 for i=1, 4 do Options.BG.General.Keybinds[i].Text = game.Players.LocalPlayer.Keybinds[i].Value end
 Options.BG.General.ScrollSpeed.Input.Text = game.Players.LocalPlayer.ScrollSpeed.Value
-Options.BG.General.EffectSpeed.Input.Text = game.Players.LocalPlayer.EffectSpeed.Value
+Options.BG.General.HitLightingSpeed.Input.Text = game.Players.LocalPlayer.HitLightingSpeed.Value
 
 local accepting_binds = false
 
@@ -172,8 +172,8 @@ Options.BG.General.ScrollSpeed.Input:GetPropertyChangedSignal("Text"):Connect(fu
 	Options.BG.General.ScrollSpeed.Input.Text = Options.BG.General.ScrollSpeed.Input.Text:gsub('%D+', '')
 end)
 
-Options.BG.General.EffectSpeed.Input:GetPropertyChangedSignal("Text"):Connect(function()
-	Options.BG.General.EffectSpeed.Input.Text = Options.BG.General.EffectSpeed.Input.Text:gsub('%D+', '')
+Options.BG.General.HitLightingSpeed.Input:GetPropertyChangedSignal("Text"):Connect(function()
+	Options.BG.General.HitLightingSpeed.Input.Text = Options.BG.General.HitLightingSpeed.Input.Text:gsub('%D+', '')
 end)
 
 Options.BG.Categories.General.MouseButton1Click:Connect(function()
@@ -200,7 +200,7 @@ Options.BG.Save.MouseButton1Click:Connect(function()
 		Options.BG.General.Keybinds["3"].Text,
 		Options.BG.General.Keybinds["4"].Text,
 		Options.BG.General.ScrollSpeed.Input.Text,
-		Options.BG.General.EffectSpeed.Input.Text
+		Options.BG.General.HitLightingSpeed.Input.Text
 	)
 
 	local success = DBRemote:InvokeServer("Set")
