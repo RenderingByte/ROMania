@@ -148,8 +148,11 @@ end
 
 function JudgeHit(close)
 
+	JudgementText.Size = UDim2.new(1, 0, 0.001, 0)
+
 	if close == "Miss" then
 
+		JudgementText.TextColor3 = Color3.new(1,0,0)
 		JudgementText.Text = "Miss"
 		ComboText.Text = "0"
 		PlayInfo["Misses"] += 1
@@ -164,6 +167,7 @@ function JudgeHit(close)
 
 		if (close >= JudgementInfo["Miss"]) or (close <= JudgementInfo["Miss"] * -1) then
 
+			JudgementText.TextColor3 = Color3.new(1,0,0)
 			JudgementText.Text = "Miss"
 			PlayInfo["Misses"] += 1
 			PlayInfo["Score"] += ScoreInfo["Miss"]
@@ -186,36 +190,42 @@ function JudgeHit(close)
 
 						if (close <= JudgementInfo["Marvelous"] and close >= 0) or (close <= JudgementInfo["Marvelous"] * -1 and close <= 0) then
 
+							JudgementText.TextColor3 = Color3.new(0,0.5,1)
 							JudgementText.Text = "Marvelous"
 							PlayInfo["Marvelouses"] += 1
 							PlayInfo["Score"] += ScoreInfo["Marvelous"]
 							PlayInfo["Health"] += 5
 						end
 					else
+						JudgementText.TextColor3 = Color3.new(1,1,0)
 						JudgementText.Text = "Perfect"
 						PlayInfo["Perfects"] += 1
 						PlayInfo["Score"] += ScoreInfo["Perfect"]
 						PlayInfo["Health"] += 3
 					end
 				else
+					JudgementText.TextColor3 = Color3.new(0,1,0)
 					JudgementText.Text = "Great"
 					PlayInfo["Greats"] += 1
 					PlayInfo["Score"] += ScoreInfo["Great"]
 					PlayInfo["Health"] -= 2
 				end
-			else 
+			else
+				JudgementText.TextColor3 = Color3.fromRGB(255, 230, 0)
 				JudgementText.Text = "Good"
 				PlayInfo["Goods"] += 1
 				PlayInfo["Score"] += ScoreInfo["Good"]
 				PlayInfo["Health"] -= 5
 			end
 		else
+			JudgementText.TextColor3 = Color3.fromRGB(255, 0, 128)
 			JudgementText.Text = "Bad"
 			PlayInfo["Bads"] += 1
 			PlayInfo["Score"] += ScoreInfo["Bad"]
 			PlayInfo["Health"] -= 8
 		end
 		PlayInfo["Combo"] += 1
+		JudgementText:TweenSize(UDim2.new(1, 0, 0.075, 0), Enum.EasingDirection.Out, Enum.EasingStyle.Back, 0.05, false)
 	end
 end
 
