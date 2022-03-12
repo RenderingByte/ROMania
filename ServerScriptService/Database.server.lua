@@ -18,6 +18,7 @@ local function Get(player)
 
 	    player.ScrollSpeed.Value = data[5]
         player.HitLightingSpeed.Value = data[6]
+        player.HitPosY.Value = data[7]
 
         return true
     elseif success and not data then
@@ -40,6 +41,7 @@ local function Set(player)
 
 	    player.ScrollSpeed.Value;
         player.HitLightingSpeed.Value;
+        player.HitPosY.Value;
 	}
 
     local success, err = pcall(function() ROManiaDB:SetAsync(player.UserId, dbinfo) end)

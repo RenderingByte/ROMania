@@ -33,6 +33,7 @@ local Results = script.Parent:WaitForChild("Results")
 local CurrentMap = Player.CurrentMap.Value
 local ScrollSpeed = Player.ScrollSpeed.Value/10
 local HitLightingSpeed = Player.HitLightingSpeed.Value
+local HitPosY = Player.HitPosY.Value/1000
 
 local Playing = false
 local PlayInfo = {
@@ -90,6 +91,9 @@ function Start()
 
 	ScrollSpeed = Player.ScrollSpeed.Value/10
 	HitLightingSpeed = Player.HitLightingSpeed.Value
+	HitPosY = Player.HitPosY.Value/1000
+
+	PlayField.Container.BG.JudgementLine.Position = UDim2.new(0, 0, HitPosY, 0)
 
 	SongSelect.Enabled = false
 	PlayField.Enabled = true

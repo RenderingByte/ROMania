@@ -1,6 +1,6 @@
 local OptionsRemote = game.ReplicatedStorage.Remotes.UpdateOptions
 
-OptionsRemote.OnServerEvent:Connect(function(player, k1, k2, k3, k4, scrollspeed, hitlightingspeed)
+OptionsRemote.OnServerEvent:Connect(function(player, k1, k2, k3, k4, scrollspeed, hitlightingspeed, hitposy)
     player.Keybinds["1"].Value = k1
     player.Keybinds["2"].Value = k2
     player.Keybinds["3"].Value = k3
@@ -8,4 +8,5 @@ OptionsRemote.OnServerEvent:Connect(function(player, k1, k2, k3, k4, scrollspeed
     
     player.ScrollSpeed.Value = scrollspeed
     player.HitLightingSpeed.Value = hitlightingspeed
+    player.HitPosY.Value = hitposy
 end)

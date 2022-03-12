@@ -176,6 +176,10 @@ Options.BG.General.HitLightingSpeed.Input:GetPropertyChangedSignal("Text"):Conne
 	Options.BG.General.HitLightingSpeed.Input.Text = Options.BG.General.HitLightingSpeed.Input.Text:gsub('%D+', '')
 end)
 
+Options.BG.General.HitPosY.Input:GetPropertyChangedSignal("Text"):Connect(function()
+	Options.BG.General.HitPosY.Input.Text = Options.BG.General.HitPosY.Input.Text:gsub('%D+', '')
+end)
+
 Options.BG.Categories.General.MouseButton1Click:Connect(function()
 	Options.BG.General.Visible = true
 end)
@@ -200,7 +204,8 @@ Options.BG.Save.MouseButton1Click:Connect(function()
 		Options.BG.General.Keybinds["3"].Text,
 		Options.BG.General.Keybinds["4"].Text,
 		Options.BG.General.ScrollSpeed.Input.Text,
-		Options.BG.General.HitLightingSpeed.Input.Text
+		Options.BG.General.HitLightingSpeed.Input.Text,
+		Options.BG.General.HitPosY.Input.Text
 	)
 
 	local success = DBRemote:InvokeServer("Set")
