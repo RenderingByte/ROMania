@@ -61,8 +61,8 @@ local JudgementInfo = {
 	["Bad"] = 0.15,
 	["Good"] = 0.125,
 	["Great"] = 0.075,
-	["Perfect"] = 0.05,
-	["Marvelous"] = 0.025,
+	["Perfect"] = 0.035,
+	["Marvelous"] = 0.01,
 }
 
 local ScoreInfo = {
