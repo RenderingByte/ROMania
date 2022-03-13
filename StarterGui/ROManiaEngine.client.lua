@@ -444,7 +444,7 @@ end)
 
 UserInputService.InputBegan:Connect(function(input)		
 	for _,v in pairs(game.Players.LocalPlayer.Keybinds:GetChildren()) do
-		if input.KeyCode == Enum.KeyCode[v.Value] then
+		if UserInputService:GetStringForKeyCode(input.KeyCode) == v.Value then
 			if Playing then
 
 				local hs = ReplicatedStorage.Resources.Hitsound:Clone()
@@ -462,7 +462,7 @@ end)
 
 UserInputService.InputEnded:Connect(function(input)
 	for _,v in pairs(game.Players.LocalPlayer.Keybinds:GetChildren()) do
-		if input.KeyCode == Enum.KeyCode[v.Value] then
+		if UserInputService:GetStringForKeyCode(input.KeyCode) == v.Value then
 			PlayEffect(v.Name, 1); KeyPress(v.Name, false)
 			return
 		end
