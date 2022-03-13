@@ -153,16 +153,16 @@ function Reset()
 			Resources.PassMusic:Play()
 		end
 		Results.BG.Score.Text = "Total Score: "..PlayInfo["Score"]
-		Results.BG.Accuracy.Text = "Accuracy: "..PlayInfo["Accuracy"]
-		Results.BG.Difficulty.Text = "Difficulty: ".. CurrentMap.difficulty/(PlayInfo["Accuracy"]/10)
+		Results.BG.Accuracy.Text = "Accuracy: "..(tonumber(string.format("%." .. 2 .. "f", PlayInfo["Accuracy"]))).."%"
+		Results.BG.Difficulty.Text = "Difficulty: ".. (tonumber(string.format("%." .. 0 .. "f", CurrentMap.difficulty/(PlayInfo["Accuracy"]/10))))
 		Results.BG.Marvelouses.Text = "Marvelouses: "..PlayInfo["Marvelouses"]
 		Results.BG.Perfects.Text = "Perfects: "..PlayInfo["Perfects"]
 		Results.BG.Greats.Text = "Greats: "..PlayInfo["Greats"]
 		Results.BG.Goods.Text = "Goods: "..PlayInfo["Goods"]
 		Results.BG.Bads.Text = "Bads: "..PlayInfo["Bads"]
 		Results.BG.Misses.Text = "Misses: "..PlayInfo["Misses"]
-		Results.BG.MA.Text = "MA: "..PlayInfo["MA"]
-		Results.BG.PA.Text = "PA: "..PlayInfo["PA"]
+		Results.BG.MA.Text = "MA: "..(tonumber(string.format("%." .. 2 .. "f", PlayInfo["MA"])))
+		Results.BG.PA.Text = "PA: "..(tonumber(string.format("%." .. 2 .. "f", PlayInfo["PA"])))
 	else
 		MainMenu.Enabled = true
 		Results.Enabled = false
