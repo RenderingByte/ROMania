@@ -28,5 +28,5 @@
 That means you can...
  
  * Help in the development process
- * Make maps for the game
+ * <a href="https://pctechery.github.io/ROMania/">Make maps for the game</a>
  * Join the Discord to help out
