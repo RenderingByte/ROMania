@@ -1,3 +1,5 @@
+-- con test
+
 local module = {}
 
 module.mapname = "Anomaly"
