@@ -405,7 +405,7 @@ RunService.RenderStepped:Connect(function(delta)
 		AccuracyText.Text = (tonumber(string.format("%." .. 2 .. "f", PlayInfo["Accuracy"]))).."%"
 
 		if PlayInfo["Health"] >= 100 then PlayInfo["Health"] = 100 end
-		-- NOFAIL MOMENT LMFAO                                              if PlayInfo["Health"] <= 0 then PlayInfo["Failed"] = true; Reset() end
+		if PlayInfo["Health"] <= 0 then PlayInfo["Failed"] = true; Reset() end
 		PlayField.Container.HBarBG.HBar:TweenSize(UDim2.new(PlayInfo["Health"]/100, 0,1.1, 0), "Out", "Quint", 0.25)
 
 		PlayField.Container.PBarBG.PBar.Size = UDim2.new(game.Workspace.Music.TimePosition / game.Workspace.Music.TimeLength, 0, 0.7, 0)
