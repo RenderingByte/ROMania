@@ -98,6 +98,8 @@ function Start()
 	SongSelect.Enabled = false
 	PlayField.Enabled = true
 	
+	CountdownLength = CurrentMap.CountdownLength or CountdownLength
+
 	wait(1)
 	for i=0, CountdownLength do
 		wait(1)
