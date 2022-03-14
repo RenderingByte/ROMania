@@ -28,5 +28,5 @@
 That means you can...
  
  * Help in the development process
- * <a href="https://RenderingByte.github.io/ROMania/">Make maps for the game</a>
+ * <a href="https://github.com/RenderingByte/ROMania/discussions/2">Make maps for the game</a>
  * Join the Discord to help out
