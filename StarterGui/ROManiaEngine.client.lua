@@ -57,6 +57,7 @@ local PlayInfo = {
 }
 
 local JudgementInfo = {
+	["Ghost"] = HitPosY-(0.2*ScrollSpeed),
 	["Miss"] = 0.2,
 	["Bad"] = 0.15,
 	["Good"] = 0.125,
@@ -318,8 +319,8 @@ function KeyPress(key, ispressed)
 				endpos = v.Position.Y.Scale
 			end
 			
-			if math.abs(endpos-JudgementLine.Position.Y.Scale) <= close then
-				close = math.abs(endpos-JudgementLine.Position.Y.Scale)
+			if math.abs(endpos-HitPosY) <= close then
+				close = math.abs(endpos-HitPosY)
 				target = v
 			end
 		end
@@ -327,7 +328,7 @@ function KeyPress(key, ispressed)
 	
 	if target then
 		if ispressed and target.ImageTransparency == 0 then
-			if target.Position.Y.Scale >= 0.8-(0.2*ScrollSpeed) then
+			if target.Position.Y.Scale >= JudgementInfo["Ghost"] then
 
 				if target:FindFirstChild("Base") then
 					target.ImageTransparency = 1
@@ -404,7 +405,7 @@ RunService.RenderStepped:Connect(function(delta)
 		AccuracyText.Text = (tonumber(string.format("%." .. 2 .. "f", PlayInfo["Accuracy"]))).."%"
 
 		if PlayInfo["Health"] >= 100 then PlayInfo["Health"] = 100 end
-		if PlayInfo["Health"] <= 0 then PlayInfo["Failed"] = true; Reset() end
+		-- NOFAIL MOMENT LMFAO                                              if PlayInfo["Health"] <= 0 then PlayInfo["Failed"] = true; Reset() end
 		PlayField.Container.HBarBG.HBar:TweenSize(UDim2.new(PlayInfo["Health"]/100, 0,1.1, 0), "Out", "Quint", 0.25)
 
 		PlayField.Container.PBarBG.PBar.Size = UDim2.new(game.Workspace.Music.TimePosition / game.Workspace.Music.TimeLength, 0, 0.7, 0)
@@ -418,8 +419,8 @@ RunService.RenderStepped:Connect(function(delta)
 
 					local tail = v.Base.Tail
 					local endpoint = v.Base.Endpoint
-					local dist = JudgementLine.Position.Y.Scale-(v.Position.Y.Scale+(endpoint.Position.Y.Scale/10))
-					local dist2 = (v.Position.Y.Scale-JudgementLine.Position.Y.Scale)*10
+					local dist = HitPosY-(v.Position.Y.Scale+(endpoint.Position.Y.Scale/10))
+					local dist2 = (v.Position.Y.Scale-HitPosY)*10
 
 					tail.Size = UDim2.new(tail.Size.X.Scale,0,math.clamp(dist*10,0,math.huge),0)
 					tail.Position = UDim2.new(tail.Position.X.Scale,0,0.5-dist2,0)
@@ -444,7 +445,7 @@ RunService.RenderStepped:Connect(function(delta)
 	end
 end)
 
-UserInputService.InputBegan:Connect(function(input)		
+UserInputService.InputBegan:Connect(function(input)
 	for _,v in pairs(game.Players.LocalPlayer.Keybinds:GetChildren()) do
 		if UserInputService:GetStringForKeyCode(input.KeyCode) == v.Value then
 			if Playing then
