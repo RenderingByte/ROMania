@@ -13,7 +13,7 @@
 <br>
 
 <div align="center">
-  <img src="https://raw.githubusercontent.com/PcTechery/ROMania/master/ROManiaIcon.png" width="250"/>
+  <img src="https://raw.githubusercontent.com/RenderingByte/ROMania/master/ROManiaIcon.png" width="250"/>
  </div>
  
  <br>
@@ -28,5 +28,5 @@
 That means you can...
  
  * Help in the development process
- * Make maps for the game
+ * <a href="https://github.com/RenderingByte/ROMania/discussions/2">Make maps for the game</a>
  * Join the Discord to help out
