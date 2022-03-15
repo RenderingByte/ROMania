@@ -188,7 +188,7 @@ function JudgeHit(close)
 		PlayInfo["Misses"] += 1
 		PlayInfo["Score"] += ScoreInfo["Miss"]
 		PlayInfo["Combo"] = 0
-		PlayInfo["Health"] -= 10
+		PlayInfo["Health"] -= 5
 
 		local miss = ReplicatedStorage.Resources.Miss:Clone()
 		miss.Parent = game.Workspace
@@ -206,7 +206,7 @@ function JudgeHit(close)
 			PlayInfo["Misses"] += 1
 			PlayInfo["Score"] += ScoreInfo["Miss"]
 			PlayInfo["Combo"] = 0
-			PlayInfo["Health"] -= 10
+			PlayInfo["Health"] -= 5
 
 			local miss = ReplicatedStorage.Resources.Miss:Clone()
 			miss.Parent = game.Workspace
@@ -270,7 +270,7 @@ function JudgeHit(close)
 					JudgementText.Text = "Good"
 					PlayInfo["Goods"] += 1
 					PlayInfo["Score"] += ScoreInfo["Good"]
-					PlayInfo["Health"] -= 5
+					PlayInfo["Health"] -= 3
 					PlayInfo["Combo"] += 1
 					JudgementText:TweenSize(UDim2.new(1, 0, 0.075, 0), Enum.EasingDirection.Out, Enum.EasingStyle.Back, 0.05, false)
 					return
@@ -280,7 +280,7 @@ function JudgeHit(close)
 				JudgementText.Text = "Bad"
 				PlayInfo["Bads"] += 1
 				PlayInfo["Score"] += ScoreInfo["Bad"]
-				PlayInfo["Health"] -= 8
+				PlayInfo["Health"] -= 4
 				PlayInfo["Combo"] += 1
 				JudgementText:TweenSize(UDim2.new(1, 0, 0.075, 0), Enum.EasingDirection.Out, Enum.EasingStyle.Back, 0.05, false)
 				return
@@ -290,7 +290,7 @@ function JudgeHit(close)
 			JudgementText.Text = "Miss"
 			PlayInfo["Misses"] += 1
 			PlayInfo["Score"] += ScoreInfo["Miss"]
-			PlayInfo["Health"] -= 10
+			PlayInfo["Health"] -= 5
 			PlayInfo["Combo"] = 0
 			JudgementText:TweenSize(UDim2.new(1, 0, 0.075, 0), Enum.EasingDirection.Out, Enum.EasingStyle.Back, 0.05, false)
 			local miss = ReplicatedStorage.Resources.Miss:Clone()
