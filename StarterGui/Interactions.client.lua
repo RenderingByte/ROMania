@@ -171,6 +171,9 @@ end)
 
 Options.BG.General.ScrollSpeed.Input:GetPropertyChangedSignal("Text"):Connect(function()
 	Options.BG.General.ScrollSpeed.Input.Text = Options.BG.General.ScrollSpeed.Input.Text:gsub('%D+', '')
+	if Options.BG.General.ScrollSpeed.Input.Text == "" then return end
+	if Options.BG.General.ScrollSpeed.Input.Text == "0" then Options.BG.General.ScrollSpeed.Input.Text = "1"
+	elseif tonumber(Options.BG.General.ScrollSpeed.Input.Text) >= 40 then Options.BG.General.ScrollSpeed.Input.Text = "40" end
 end)
 
 Options.BG.General.HitLightingSpeed.Input:GetPropertyChangedSignal("Text"):Connect(function()
