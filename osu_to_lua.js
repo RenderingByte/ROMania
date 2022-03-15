@@ -109,7 +109,7 @@ module.export("osu_to_lua", function(osu_file_contents) {
 	append_to_output("");
 	append_to_output("--Other Info--");
 	append_to_output("module.difficulty = ENTER OSU STAR RATING");
-	append_to_output("module.offset = \"" + "ENTER OSU OFFSET" + "\"");
+	append_to_output("module.offset = ENTER OSU OFFSET");
 	append_to_output("module.countdown = \"" + beatmap.Countdown + "\"");
 	append_to_output("");
 	append_to_output("module.notes = {");
