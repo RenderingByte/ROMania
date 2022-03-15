@@ -15,7 +15,7 @@ module.mapcreator = "razlteh"
 
 --Other Info--
 module.difficulty = 38
-module.offset = 2133
+module.offset = 200
 module.countdown = "0"
 
 module.notes = {

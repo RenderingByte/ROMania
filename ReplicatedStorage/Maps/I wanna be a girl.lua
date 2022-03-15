@@ -15,7 +15,7 @@ module.mapcreator = "LostCool"
 
 --Other Info--
 module.difficulty = 40
-module.offset = 1128
+module.offset = -30
 module.countdown = "0"
 
 module.notes = {

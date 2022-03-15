@@ -15,7 +15,7 @@ module.mapcreator = "Applequestria"
 
 --Other Info--
 module.difficulty = 48
-module.offset = 905
+module.offset = 3200
 module.countdown = "0"
 
 module.notes = {
