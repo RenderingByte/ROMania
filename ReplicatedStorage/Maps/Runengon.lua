@@ -15,7 +15,7 @@ module.mapcreator = "Raveille"
 
 --Other Info--
 module.difficulty = 44
-module.offset = "144636"
+module.offset = "0"
 module.countdown = "0"
 
 module.notes = {

@@ -15,7 +15,7 @@ module.mapcreator = "Onta_Bekasi"
 
 --Other Info--
 module.difficulty = 43
-module.offset = "32643"
+module.offset = "0"
 module.countdown = "1"
 
 module.notes = {
