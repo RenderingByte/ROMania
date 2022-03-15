@@ -6,25 +6,15 @@ local Results = script.Parent:WaitForChild("Results")
 local Options = script.Parent:WaitForChild("Options")
 local About = script.Parent:WaitForChild("About")
 
-local Players = game:GetService("Players")
-
 local DBRemote = game:GetService("ReplicatedStorage").Remotes:WaitForChild("Database")
 local OptionsRemote = game:GetService("ReplicatedStorage").Remotes:WaitForChild("UpdateOptions")
 
 -- Startup
 
 wait(2)
-Startup.BG.Title:TweenPosition(
-	UDim2.new(0.5, 0, 0.35, 0),
-	Enum.EasingDirection.In,
-	Enum.EasingStyle.Sine,
-	1,
-	true
-)
-wait(1)
 
 Startup.BG.Status.Visible = true
-Startup.BG.PressAnyKey:TweenSizeAndPosition(UDim2.new(0.4, 0, 0.1, 0), UDim2.new(0.5, 0, 0.7, 0), Enum.EasingDirection.InOut, Enum.EasingStyle.Linear, 0.5)
+Startup.BG.PressAnyKey:TweenSize(UDim2.new(0.277, 0, 0.043, 0), Enum.EasingDirection.Out, Enum.EasingStyle.Linear, 0.75)
 
 local clicked = false
 game:GetService("UserInputService").InputBegan:Connect(function()
@@ -37,52 +27,46 @@ end)
 
 -- Main Menu
 
-MainMenu.BG.Play.MouseButton1Click:Connect(function()
+MainMenu.BG.SelectionOptions.Play.TextButton.MouseButton1Click:Connect(function()
 	game.Workspace.Click:Play()
 	MainMenu.Enabled = false
 	SongSelect.Enabled = true
-	MainMenu.BG.Options.TextColor3 = Color3.fromRGB(255,255,255)
 end)
 
-MainMenu.BG.Play.MouseEnter:Connect(function()
+MainMenu.BG.SelectionOptions.Play.TextButton.MouseEnter:Connect(function()
 	game.Workspace.Hover:Play()
-	MainMenu.BG.Play.TextColor3 = Color3.fromRGB(0,255,0)
 end)
 
-MainMenu.BG.Play.MouseLeave:Connect(function()
-	MainMenu.BG.Play.TextColor3 = Color3.fromRGB(255,255,255)
+MainMenu.BG.SelectionOptions.Play.TextButton.MouseLeave:Connect(function()
+	
 end)
 
-MainMenu.BG.Options.MouseButton1Click:Connect(function()
+MainMenu.BG.SelectionOptions.Options.TextButton.MouseButton1Click:Connect(function()
 	game.Workspace.Click:Play()
 	MainMenu.Enabled = false
 	Options.Enabled = true
-	MainMenu.BG.Options.TextColor3 = Color3.fromRGB(255,255,255)
 end)
 
-MainMenu.BG.Options.MouseEnter:Connect(function()
+MainMenu.BG.SelectionOptions.Options.TextButton.MouseEnter:Connect(function()
 	game.Workspace.Hover:Play()
-	MainMenu.BG.Options.TextColor3 = Color3.fromRGB(0,255,0)
 end)
 
-MainMenu.BG.Options.MouseLeave:Connect(function()
-	MainMenu.BG.Options.TextColor3 = Color3.fromRGB(255,255,255)
+MainMenu.BG.SelectionOptions.Options.TextButton.MouseLeave:Connect(function()
+
 end)
 
-MainMenu.BG.About.MouseButton1Click:Connect(function()
+MainMenu.BG.SelectionOptions.About.TextButton.MouseButton1Click:Connect(function()
 	game.Workspace.Click:Play()
 	MainMenu.Enabled = false
 	About.Enabled = true
-	MainMenu.BG.About.TextColor3 = Color3.fromRGB(255,255,255)
 end)
 
-MainMenu.BG.About.MouseEnter:Connect(function()
+MainMenu.BG.SelectionOptions.About.TextButton.MouseEnter:Connect(function()
 	game.Workspace.Hover:Play()
-	MainMenu.BG.About.TextColor3 = Color3.fromRGB(0,255,0)
 end)
 
-MainMenu.BG.About.MouseLeave:Connect(function()
-	MainMenu.BG.About.TextColor3 = Color3.fromRGB(255,255,255)
+MainMenu.BG.SelectionOptions.About.TextButton.MouseLeave:Connect(function()
+	
 end)
 
 -- Song Select
@@ -236,4 +220,9 @@ end)
 About.BG.Close.MouseButton1Click:Connect(function()
 	About.Enabled = false
 	MainMenu.Enabled = true
+	game.Workspace.Click:Play()
+end)
+
+About.BG.Close.MouseEnter:Connect(function()
+	game.Workspace.Hover:Play()
 end)
